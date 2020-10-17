@@ -1,0 +1,22 @@
+scenario:
+  - name: Next
+    cron: 0 0/2 * ? * *
+    commands:
+      - type: TURN_ON
+        host: 192.168.1.101
+  - name: Night
+    cron: 0 0 23 ? * *
+    commands:
+      - type: TURN_ON
+        host: 192.168.1.101
+      - type: TURN_ON
+        host: 192.168.1.102
+  - name: Morning
+    cron: 0 0 8 ? * *
+    commands:
+      - type: TURN_OFF
+        host: 192.168.1.101
+      - type: TURN_OFF
+        host: 192.168.1.102
+
+
