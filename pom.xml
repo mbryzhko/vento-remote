@@ -80,6 +80,24 @@
         </dependency>
     </dependencies>
 
-
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.awt.headless>true</java.awt.headless>
+                    </systemPropertyVariables>
+                    <excludes>
+                        <exclude>**/*IT.*</exclude>
+                        <exclude>**/*IntegrationTest.*</exclude>
+                        <exclude>**/*E2ETest.*</exclude>
+                        <exclude>**/*ContractTest.*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

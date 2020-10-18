@@ -1,17 +1,16 @@
 package org.bma.vento.schedule;
 
 import org.bma.vento.cmd.CommandType;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class SchedulePropertiesTest {
 
     @Test
