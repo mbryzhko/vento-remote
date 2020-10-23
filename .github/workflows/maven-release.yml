@@ -31,7 +31,7 @@ jobs:
     - name: Configure Git user
       run: |
         git config user.email "actions@github.com"
-        git config user.name "GitHub Actions
+        git config user.name "GitHub Actions"
     - name: Maven Release
       run: mvn release:prepare release:perform -s $GITHUB_WORKSPACE/settings.xml
       env:
