@@ -28,7 +28,7 @@ jobs:
         git config --global author.name "${GITHUB_ACTOR}"
 
     - name: Prepare Release
-      run: mvn -B release:prepare -Dusername=$GITHUB_ACTOR -Dpassword=$GITHUB_TOKEN
+      run: mvn -B release:prepare 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
