@@ -111,10 +111,10 @@
 
     <scm>
         <connection>
-            scm:git:git@github.com:mbryzhko/vento-remote.git
+            scm:git:https://github.com/mbryzhko/vento-remote.git
         </connection>
         <developerConnection>
-            scm:git:git@github.com:mbryzhko/vento-remote.git
+            scm:git:https://github.com/mbryzhko/vento-remote.git
         </developerConnection>
         <tag>HEAD</tag>
     </scm>
