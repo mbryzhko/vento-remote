@@ -21,6 +21,11 @@ jobs:
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+    - name: Configure Git user
+      run: |
+        git config user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+
     - name: Prepare Release
       run: mvn -B release:prepare -s $GITHUB_WORKSPACE/settings.xml
       env:
