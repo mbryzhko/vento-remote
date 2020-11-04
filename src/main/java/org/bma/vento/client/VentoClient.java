@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 @Slf4j
-@Service
 public class VentoClient {
 
     private static final int RESPONSE_PACKET_SIZE = 40;

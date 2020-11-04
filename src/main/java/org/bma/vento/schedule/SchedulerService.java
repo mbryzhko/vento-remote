@@ -11,14 +11,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
 public class SchedulerService {
 
     private final ScheduleProperties properties;
 
     private final VentoClient ventoClient;
 
-    @Autowired
     public SchedulerService(ScheduleProperties properties, VentoClient ventoClient) {
         this.properties = properties;
         this.ventoClient = ventoClient;

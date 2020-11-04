@@ -29,7 +29,7 @@ public class VentoRemote implements SchedulingConfigurer {
     private String schedulePropertiedFileName;
 
     public static void main(String[] args) {
-        var context = new AnnotationConfigApplicationContext("org.bma.vento");
+        new AnnotationConfigApplicationContext("org.bma.vento");
     }
 
     @Autowired
@@ -41,6 +41,16 @@ public class VentoRemote implements SchedulingConfigurer {
                 .loadAs(resourceLoader
                                 .getResource(schedulePropertiedFileName).getInputStream(),
                         ScheduleProperties.class);
+    }
+
+    @Bean
+    public SchedulerService schedulerService(ScheduleProperties scheduleProperties, VentoClient ventoClient) {
+        return new SchedulerService(scheduleProperties, ventoClient);
+    }
+
+    @Bean
+    public VentoClient ventoClient() {
+        return new VentoClient();
     }
 
     @Bean

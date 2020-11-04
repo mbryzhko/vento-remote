@@ -1,4 +1,4 @@
-package org.bma.vento;
+package org.bma.vento.cmd;
 
 import org.bma.vento.client.GetSettingsRequest;
 import org.bma.vento.client.TurnOnOffRequest;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-public class Main {
+public class CommandRunner {
 
     public static void main(String [] args) throws IOException {
         VentoClient client = new VentoClient();

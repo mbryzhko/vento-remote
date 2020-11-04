@@ -16,6 +16,11 @@
         <spring.framework.version>5.1.4.RELEASE</spring.framework.version>
         <junit.version>5.4.2</junit.version>
         <mockito.version>2.24.0</mockito.version>
+        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
+        <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
+
     </properties>
 
     <dependencies>
@@ -82,7 +87,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <systemPropertyVariables>
                         <java.awt.headless>true</java.awt.headless>
@@ -98,11 +103,68 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
+                <version>${maven-release-plugin.version}</version>
                 <configuration>
                     <resume>false</resume>
                     <useReleaseProfile>false</useReleaseProfile>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.bma.vento.VentoRemote</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <configuration>
+                    <repository>registry.hub.docker.com/mbryzhko/${project.artifactId}</repository>
+                    <username>${project.groupId}</username>
+                    <password>${env.GITHUB_TOKEN}</password>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>tag-latest</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <tag>latest</tag>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
