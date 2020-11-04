@@ -146,8 +146,8 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
                 <configuration>
-                    <repository>registry.hub.docker.com/mbryzhko/${project.artifactId}</repository>
-                    <username>${project.groupId}</username>
+                    <repository>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}</repository>
+                    <username>${env.GITHUB_ACTOR}</username>
                     <password>${env.GITHUB_TOKEN}</password>
                     <tag>${project.version}</tag>
                     <buildArgs>

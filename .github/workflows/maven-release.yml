@@ -35,6 +35,7 @@ jobs:
     - name: Perform Release
       run: mvn -B release:perform
       env:
+        GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
