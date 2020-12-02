@@ -5,7 +5,7 @@ name: Maven Release
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, arm32v6 ]
 
 jobs:
   build:

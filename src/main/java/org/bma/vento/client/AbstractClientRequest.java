@@ -13,8 +13,8 @@ public abstract class AbstractClientRequest<R extends ClientResponse> implements
 
     @Override
     public final byte[] serialize() {
-        var cmd = serializeCommand();
-        var buf = new byte[CMD_PREFIX.length + cmd.length + CMD_TERM.length];
+        byte[] cmd = serializeCommand();
+        byte[] buf = new byte[CMD_PREFIX.length + cmd.length + CMD_TERM.length];
 
         System.arraycopy(CMD_PREFIX, 0, buf, 0, CMD_PREFIX.length);
         System.arraycopy(cmd, 0, buf, CMD_PREFIX.length, cmd.length);

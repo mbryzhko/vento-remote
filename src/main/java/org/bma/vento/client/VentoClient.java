@@ -28,7 +28,7 @@ public class VentoClient {
 
     public <T extends ClientResponse> T sendCommand(String host, int port, ClientRequest<T> request)  {
         try (DatagramSocket socket = socketSupplier.get()) {
-            var address = InetAddress.getByName(host);
+            InetAddress address = InetAddress.getByName(host);
             sendRequest(socket, address, port, request);
             return receiveResponse(socket, request);
         } catch (IOException e) {
@@ -46,7 +46,7 @@ public class VentoClient {
     }
 
     private void sendRequest(DatagramSocket socket, InetAddress address, int port, ClientRequest<?> request) throws IOException {
-        var buf = request.serialize();
+        byte[] buf = request.serialize();
 
         log.debug("Sending to: {}, command: {} ", address, Arrays.toString(buf));
 

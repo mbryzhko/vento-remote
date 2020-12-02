@@ -9,7 +9,7 @@ public abstract class AbstractClientResponse implements ClientResponse {
 
     public AbstractClientResponse(byte[] response) {
 
-        var cmd = new byte[response.length - PREFIX_LEN];
+        byte[] cmd = new byte[response.length - PREFIX_LEN];
 
         System.arraycopy(response, PREFIX_LEN, cmd, 0, cmd.length);
 
