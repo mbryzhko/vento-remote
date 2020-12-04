@@ -39,10 +39,16 @@ public class VentoRemote implements SchedulingConfigurer {
 
     @Bean
     public ScheduleProperties scheduleProperties(ResourceLoader resourceLoader) throws IOException {
-        return new Yaml()
+        log.debug("Loading scheduling properties from: {}", schedulePropertiedFileName);
+
+        ScheduleProperties properties = new Yaml()
                 .loadAs(resourceLoader
                                 .getResource(schedulePropertiedFileName).getInputStream(),
                         ScheduleProperties.class);
+
+        log.debug("Loaded properties: {}", properties);
+
+        return properties;
     }
 
     @Bean
