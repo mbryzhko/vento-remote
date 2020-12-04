@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +23,11 @@ class SchedulePropertiesTest {
         Scenario scenario = new Scenario();
         scenario.setName("DOROSLA_ON");
         scenario.setCron("0 0 23 ? * * *");
-        properties.setScenario(List.of(scenario));
+        properties.setScenario(Collections.singleton(scenario));
 
-
-        List<CommandProperties> commands = List.of(
-                new CommandProperties(CommandType.TURN_ON, "192.168:1.101", 4000, Map.of()),
-                new CommandProperties(CommandType.SET_SPEED, "192.168:1.102", 4000, Map.of("value", 1))
-
-        );
+        List<CommandProperties> commands = new ArrayList<>();
+        commands.add(new CommandProperties(CommandType.TURN_ON, "192.168:1.101", 4000, Collections.emptyMap()));
+        commands.add(new CommandProperties(CommandType.SET_SPEED, "192.168:1.102", 4000, Collections.singletonMap("value", 1)));
         scenario.setCommands(commands);
 
         Yaml yaml = new Yaml();

@@ -11,9 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +38,7 @@ class SchedulerServiceTest {
 
     @Test
     public void creatingListOfScheduledScenario() {
-        properties.setScenario(List.of(turnOnScenario()));
+        properties.setScenario(Collections.singletonList(turnOnScenario()));
 
         Collection<ScheduleScenario> toSchedule = service.getScenarioToSchedule();
 
@@ -53,7 +51,7 @@ class SchedulerServiceTest {
     }
 
     private Scenario turnOnScenario() {
-        return new Scenario(TURN_ON_NAME, CRON_EXP, List.of(new CommandProperties(CommandType.TURN_ON, REMOTE_HOST, 4000, Map.of())));
+        return new Scenario(TURN_ON_NAME, CRON_EXP, Collections.singletonList(new CommandProperties(CommandType.TURN_ON, REMOTE_HOST, 4000, Collections.emptyMap())));
     }
 
 }
