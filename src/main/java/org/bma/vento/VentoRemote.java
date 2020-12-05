@@ -16,7 +16,10 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.scheduling.support.CronTrigger;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
@@ -69,8 +72,10 @@ public class VentoRemote implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         schedulerService.getScenarioToSchedule().forEach(scenario -> {
-            log.info("Scheduling scenario {}", scenario);
-            taskRegistrar.addCronTask(scenario, scenario.getCronExp());
+            CronTrigger trigger = new CronTrigger(scenario.getCronExp());
+
+            log.info("Scheduling scenario: {}, Next run at: {}", scenario, trigger.nextExecutionTime(new SimpleTriggerContext()));
+            taskRegistrar.addCronTask(new CronTask(scenario, trigger));
         });
     }
 }
