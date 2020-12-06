@@ -15,6 +15,7 @@ import java.util.function.Supplier;
 public class VentoClient {
 
     private static final int RESPONSE_PACKET_SIZE = 40;
+    private static final int SOCKET_TIMEOUT_MSEC = 30 * 1000;
 
     private final Supplier<DatagramSocket> socketSupplier;
 
@@ -55,7 +56,9 @@ public class VentoClient {
 
     private static final Supplier<DatagramSocket> DEFAULT_SOCKET = () -> {
         try {
-            return new DatagramSocket();
+            DatagramSocket socket = new DatagramSocket();
+            socket.setSoTimeout(SOCKET_TIMEOUT_MSEC);
+            return socket;
         } catch (SocketException e) {
             throw new IllegalStateException("Cannot create connection socket", e);
         }
