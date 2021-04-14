@@ -1,6 +1,8 @@
 package org.bma.vento;
 
 import lombok.extern.slf4j.Slf4j;
+import org.bma.vento.client.DefaultVentoClient;
+import org.bma.vento.client.RetryableVentoClient;
 import org.bma.vento.client.VentoClient;
 import org.bma.vento.schedule.ScheduleProperties;
 import org.bma.vento.schedule.SchedulerService;
@@ -50,7 +52,7 @@ public class VentoRemote implements SchedulingConfigurer {
 
     @Bean
     public VentoClient ventoClient() {
-        return new VentoClient();
+        return new RetryableVentoClient(new DefaultVentoClient());
     }
 
     @Bean

@@ -3,7 +3,7 @@ package org.bma.vento.cmd;
 import org.bma.vento.client.GetSettingsRequest;
 import org.bma.vento.client.ShortStatusResponse;
 import org.bma.vento.client.TurnOnOffRequest;
-import org.bma.vento.client.VentoClient;
+import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.schedule.CommandProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class TurnOffCommandTest {
     private TurnOffCommand command;
 
     @Mock
-    private VentoClient ventoClient;
+    private DefaultVentoClient ventoClient;
 
     @Mock
     private ShortStatusResponse getSettingsResponse;
