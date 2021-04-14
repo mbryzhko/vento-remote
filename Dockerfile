@@ -1,8 +1,9 @@
 FROM arm32v6/openjdk:8u212-jre-alpine
 MAINTAINER Maksym Bryzhko <maxim.bryzhko@gmail.com>
 
-RUN apk update && \
-    apk add --no-cache tzdata
+## It should be build with --platform=linux/arm
+#RUN apk update && \
+#    apk add --no-cache tzdata
 
 # Add the service itself
 ARG JAR_FILE
