@@ -13,6 +13,7 @@ public interface VentoClient {
      * @param request to be sent
      * @return De-serialized response
      */
-    <T extends ClientResponse> T sendCommand(String host, int port, ClientRequest<T> request);
+    <T extends ClientResponse> T sendCommand(String host, int port, ClientRequest<T> request)
+            throws VentoClientException;
 
 }

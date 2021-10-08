@@ -7,6 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
@@ -29,13 +30,15 @@ public class DefaultVentoClient implements VentoClient {
         this(DEFAULT_SOCKET);
     }
 
-    public <T extends ClientResponse> T sendCommand(String host, int port, ClientRequest<T> request)  {
+    public <T extends ClientResponse> T sendCommand(String host, int port, ClientRequest<T> request) throws VentoClientException  {
         try (DatagramSocket socket = socketSupplier.get()) {
             InetAddress address = InetAddress.getByName(host);
             sendRequest(socket, address, port, request);
             return receiveResponse(socket, address, port, request);
         } catch (IOException e) {
-            throw new VentoClientException("Error during sending command to " + host + ":" + port, e);
+            VentoClientException ex = new VentoClientException("Error during sending command to " + host + ":" + port, e);
+            if (e instanceof SocketTimeoutException) ex.setTimeout(true);
+            throw ex;
         }
     }
 

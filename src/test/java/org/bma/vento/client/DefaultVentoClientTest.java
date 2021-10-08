@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketTimeoutException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,12 +66,24 @@ class DefaultVentoClientTest {
 
     @Test
     public void ventoClientExceptionWhenSomethingWentWrong()  {
-        assertThrows(VentoClientException.class, () -> {
+        VentoClientException ex = assertThrows(VentoClientException.class, () -> {
             Mockito.when(request.serialize()).thenReturn(SERIALIZED_REQUEST);
             Mockito.doThrow(IOException.class).when(socket).send(Mockito.any());
             client.sendCommand(HOST, PORT, request);
         });
 
+        assertFalse(ex.isTimeout());
+    }
+
+    @Test
+    public void ventoClientTimeoutException()  {
+        VentoClientException ex = assertThrows(VentoClientException.class, () -> {
+            Mockito.when(request.serialize()).thenReturn(SERIALIZED_REQUEST);
+            Mockito.doThrow(SocketTimeoutException.class).when(socket).receive(Mockito.any());
+            client.sendCommand(HOST, PORT, request);
+        });
+
+        assertTrue(ex.isTimeout());
     }
 
     @Test

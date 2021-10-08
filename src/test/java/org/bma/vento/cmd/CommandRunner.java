@@ -1,6 +1,8 @@
 package org.bma.vento.cmd;
 
 import org.bma.vento.client.DefaultVentoClient;
+import org.bma.vento.client.RetryableVentoClient;
+import org.bma.vento.client.VentoClient;
 import org.bma.vento.schedule.CommandProperties;
 
 import java.io.IOException;
@@ -8,13 +10,13 @@ import java.io.IOException;
 public class CommandRunner {
 
     public static void main(String [] args) throws IOException {
-        DefaultVentoClient client = new DefaultVentoClient();
+        VentoClient client = new RetryableVentoClient(new DefaultVentoClient());
         CommandProperties properties = new CommandProperties();
-        properties.setHost("192.168.1.101");
+        properties.setHost("192.168.1.104");
 //        client.sendCommand("192.168.1.101", 4000, new GetSettingsRequest());
 //        client.sendCommand("192.168.1.102", 4000, new GetSettingsRequest());
 
-//        new TurnOnCommand(client, properties).run();
+        new TurnOnCommand(client, properties).run();
         new TurnOffCommand(client, properties).run();
     }
 
