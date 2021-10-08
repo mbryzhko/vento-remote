@@ -4,8 +4,6 @@ import org.bma.vento.client.VentoClient;
 import org.bma.vento.cmd.Command;
 import org.bma.vento.cmd.TurnOffCommand;
 import org.bma.vento.cmd.TurnOnCommand;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;

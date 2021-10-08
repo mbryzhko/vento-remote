@@ -1,7 +1,6 @@
 package org.bma.vento.schedule;
 
-import org.bma.vento.client.TurnOnOffRequest;
-import org.bma.vento.client.VentoClient;
+import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.cmd.CommandType;
 import org.bma.vento.cmd.TurnOnCommand;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,7 @@ class SchedulerServiceTest {
     private ScheduleProperties properties;
 
     @Mock
-    private VentoClient ventoClient;
+    private DefaultVentoClient ventoClient;
 
     @BeforeEach
     public void setup() {

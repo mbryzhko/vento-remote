@@ -3,7 +3,7 @@ package org.bma.vento.cmd;
 import org.bma.vento.client.GetSettingsRequest;
 import org.bma.vento.client.ShortStatusResponse;
 import org.bma.vento.client.TurnOnOffRequest;
-import org.bma.vento.client.VentoClient;
+import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.schedule.CommandProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,10 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class TurnOnCommandTest {
@@ -24,7 +20,7 @@ class TurnOnCommandTest {
     private TurnOnCommand command;
 
     @Mock
-    private VentoClient ventoClient;
+    private DefaultVentoClient ventoClient;
 
     @Mock
     private ShortStatusResponse getSettingsResponse;

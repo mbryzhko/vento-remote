@@ -11,20 +11,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class VentoClientTest {
+class DefaultVentoClientTest {
 
     private static final String HOST = "localhost";
     private static final int PORT = 4000;
     private static final byte[] SERIALIZED_REQUEST = new byte[] {1, 2, 3, 4};
     private static final byte[] RAW_RESPONSE = new byte[] {5, 6, 7, 8};
 
-    private VentoClient client;
+    private DefaultVentoClient client;
 
     @Mock
     private DatagramSocket socket;
@@ -36,7 +34,7 @@ class VentoClientTest {
 
     @BeforeEach
     public void setup() {
-        client = new VentoClient(() -> socket);
+        client = new DefaultVentoClient(() -> socket);
     }
 
     @Test
