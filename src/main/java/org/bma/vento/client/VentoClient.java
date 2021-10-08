@@ -1,7 +1,6 @@
 package org.bma.vento.client;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -31,17 +30,24 @@ public class VentoClient {
         try (DatagramSocket socket = socketSupplier.get()) {
             InetAddress address = InetAddress.getByName(host);
             sendRequest(socket, address, port, request);
-            return receiveResponse(socket, request);
+            return receiveResponse(socket, address, port, request);
         } catch (IOException e) {
             throw new VentoClientException("Error during sending command to " + host + ":" + port, e);
         }
     }
 
-    private <T extends ClientResponse> T receiveResponse(DatagramSocket socket, ClientRequest<T> request) throws IOException {
+    private <T extends ClientResponse> T receiveResponse(DatagramSocket socket, InetAddress address, int port, ClientRequest<T> request) throws IOException {
         byte[] buf = new byte[RESPONSE_PACKET_SIZE];
-        socket.receive(new DatagramPacket(buf, buf.length));
 
-        log.debug("Received from: {}, response: {}", socket.getInetAddress(), Arrays.toString(buf));
+        long startReceivingTimeMs = System.currentTimeMillis();
+
+        socket.receive(new DatagramPacket(buf, buf.length, address, port));
+
+        log.debug("Received response: {} from host: {}, took time (ms): {}, body: {}",
+                request.getClass().getSimpleName(),
+                address.getHostName(),
+                System.currentTimeMillis() - startReceivingTimeMs,
+                Arrays.toString(buf));
 
         return request.createResponse(buf);
     }
@@ -49,9 +55,15 @@ public class VentoClient {
     private void sendRequest(DatagramSocket socket, InetAddress address, int port, ClientRequest<?> request) throws IOException {
         byte[] buf = request.serialize();
 
-        log.debug("Sending to: {}, command: {} ", address, Arrays.toString(buf));
+        long startSendingTimeMs = System.currentTimeMillis();
 
         socket.send(new DatagramPacket(buf, buf.length, address, port));
+
+        log.debug("Sent request: {} to host: {}, took time (ms): {}, body: {}",
+                request.getClass().getSimpleName(),
+                address.getHostName(),
+                System.currentTimeMillis() - startSendingTimeMs,
+                Arrays.toString(buf));
     }
 
     private static final Supplier<DatagramSocket> DEFAULT_SOCKET = () -> {
