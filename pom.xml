@@ -4,7 +4,7 @@
 
     <groupId>org.bma</groupId>
     <artifactId>vento-remote</artifactId>
-    <version>1.12</version>
+    <version>1.13-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
