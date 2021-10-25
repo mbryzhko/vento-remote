@@ -107,6 +107,7 @@
                 <configuration>
                     <resume>false</resume>
                     <useReleaseProfile>false</useReleaseProfile>
+                    <tagNameFormat>@{project.artifactId}-arm32v6-@{project.version}</tagNameFormat>
                 </configuration>
             </plugin>
             <plugin>
