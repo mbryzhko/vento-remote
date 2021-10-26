@@ -149,27 +149,36 @@
                     <repository>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}</repository>
                     <username>${env.GITHUB_ACTOR}</username>
                     <password>${env.GITHUB_TOKEN}</password>
-                    <tag>${project.version}</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
+                        <IMG>lpicanco/java11-alpine</IMG>
                     </buildArgs>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>tag-latest</id>
+                        <id>x86</id>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>latest</tag>
+                            <tag>${project.version}-x86</tag>
+                            <buildArgs>
+                                <IMG>lpicanco/java11-alpine</IMG>
+                            </buildArgs>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>arm32v7</id>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <tag>${project.version}-arm64v8</tag>
+                            <buildArgs>
+                                <IMG>arm32v7/openjdk:11</IMG>
+                            </buildArgs>
                         </configuration>
                     </execution>
                 </executions>
