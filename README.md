@@ -6,6 +6,7 @@ It allows creating scheduled scenario to turn on and turn off the ventilation.
 See also [Spec](https://blaubergventilatoren.de/uploads/download/ventoexpertduowsmarthousev11ru.pdf).
 
 ## How To Use
+### Install
 Download run script.  
 `wget https://github.com/mbryzhko/vento-remote/blob/arm32v6/run.sh`
 
