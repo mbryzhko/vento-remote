@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  vento-remote-x86:
+    image: ghcr.io/mbryzhko/vento-remote/vento-remote-x86:${VENTO_VERSION}
+    volumes:
+      - ${HOME}/.vento/schedule.yaml:/usr/share/vento-remote/schedule.yaml
+    environment:
+      - VENTO_SCHEDULE="file:/usr/share/vento-remote/schedule.yaml"
+  vento-remote-arm32v6:
+    image: ghcr.io/mbryzhko/vento-remote/vento-remote-arm32v6:${VENTO_VERSION}
+    volumes:
+      - ${HOME}/.vento/schedule.yaml:/usr/share/vento-remote/schedule.yaml
+    environment:
+      - VENTO_SCHEDULE="file:/usr/share/vento-remote/schedule.yaml"

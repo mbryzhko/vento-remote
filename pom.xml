@@ -21,10 +21,10 @@
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <logback.version>1.2.3</logback.version>
+        <snake-yaml.version>1.27</snake-yaml.version>
+        <slf4j-api.version>1.7.25</slf4j-api.version>
 
         <docker-img-name.x86>lpicanco/java11-alpine:11.0</docker-img-name.x86>
-
-        <snake-yaml.version>1.27</snake-yaml.version>
     </properties>
 
     <dependencies>
@@ -57,7 +57,13 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- TESTING -->
