@@ -49,7 +49,7 @@ public class VentoRemote implements SchedulingConfigurer {
                                 .getResource(schedulePropertiedFileName).getInputStream(),
                         ScheduleProperties.class);
 
-        log.debug("Loaded properties: {}", properties);
+        log.info("Loaded properties: {}", properties);
 
         return properties;
     }
