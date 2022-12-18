@@ -13,9 +13,7 @@ import java.util.List;
 public class ScheduleScenario implements Runnable {
 
     private final String name;
-
     private final String cronExp;
-
     private final List<Command> commandsToRun;
 
     @Override
@@ -29,5 +27,4 @@ public class ScheduleScenario implements Runnable {
             }
         }
     }
-
 }

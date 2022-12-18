@@ -21,8 +21,7 @@ class SchedulePropertiesTest {
         Scenario scenario = new Scenario();
         scenario.setName("DOROSLA_ON");
         scenario.setCron("0 0 23 ? * * *");
-        properties.setScenario(List.of(scenario));
-
+        properties.getScenario().add(scenario);
 
         List<CommandProperties> commands = List.of(
                 new CommandProperties(CommandType.TURN_ON, "192.168:1.101", 4000, Map.of()),
@@ -34,5 +33,4 @@ class SchedulePropertiesTest {
         Yaml yaml = new Yaml();
         System.out.println(yaml.dump(properties));
     }
-
 }

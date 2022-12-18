@@ -28,6 +28,7 @@ import java.io.IOException;
 @Slf4j
 @EnableScheduling
 public class VentoRemote implements SchedulingConfigurer {
+    // VENTO_SCHEDULE
     private static final String SCHEDULE_PROP_FILE = "vento.schedule";
 
     @Value("${" + SCHEDULE_PROP_FILE + ":classpath:/schedule.yaml}")
