@@ -37,7 +37,7 @@ class SchedulerServiceTest {
 
     @Test
     public void creatingListOfScheduledScenario() {
-        properties.setScenario(Collections.singletonList(turnOnScenario()));
+        properties.getScenario().add(turnOnScenario());
 
         Collection<ScheduleScenario> toSchedule = service.getScenarioToSchedule();
 
@@ -52,5 +52,4 @@ class SchedulerServiceTest {
     private Scenario turnOnScenario() {
         return new Scenario(TURN_ON_NAME, CRON_EXP, Collections.singletonList(new CommandProperties(CommandType.TURN_ON, REMOTE_HOST, 4000, Collections.emptyMap())));
     }
-
 }
