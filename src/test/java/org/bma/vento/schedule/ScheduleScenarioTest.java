@@ -37,10 +37,7 @@ class ScheduleScenarioTest {
     @BeforeEach
     public void setup() {
         commands = new ArrayList<>();
-        scenario = ScheduleScenario.builder()
-                .commandsToRun(commands)
-                .cronExp("0 0 23 ? * *")
-                .build();
+        scenario = new ScheduleScenario("test", "0 0 23 ? * *", commands);
     }
 
     @Test

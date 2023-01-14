@@ -4,6 +4,7 @@ import org.bma.vento.client.VentoClient;
 import org.bma.vento.cmd.Command;
 import org.bma.vento.cmd.TurnOffCommand;
 import org.bma.vento.cmd.TurnOnCommand;
+import org.bma.vento.schedule.durable.DurableScheduleScenario;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +29,13 @@ public class SchedulerService {
     }
 
     private ScheduleScenario createScenarioScheduleInfo(Scenario scenario) {
-        return new ScheduleScenario(scenario.getName(), scenario.getCron(), createCommandInstances(scenario.getCommands()));
+        List<Command> commands = createCommandInstances(scenario.getCommands());
+        if (properties.getDurabilityProperties().isEnable()) {
+            return new DurableScheduleScenario(properties.getDurabilityProperties().getStoreFolderPath(),
+                    scenario.getName(), scenario.getCron(), commands);
+        } else {
+            return new ScheduleScenario(scenario.getName(), scenario.getCron(), commands);
+        }
     }
 
     private List<Command> createCommandInstances(List<CommandProperties> commands) {
