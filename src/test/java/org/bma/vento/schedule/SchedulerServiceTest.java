@@ -3,6 +3,7 @@ package org.bma.vento.schedule;
 import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.cmd.CommandType;
 import org.bma.vento.cmd.TurnOnCommand;
+import org.bma.vento.schedule.durable.DurableScheduleScenario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,7 @@ class SchedulerServiceTest {
     public static final String TURN_ON_NAME = "TurnOn";
     public static final String REMOTE_HOST = "localost";
     public static final String CRON_EXP = "* * *";
+    public static final String FOLDER_PATH = "/foo/path";
 
     private SchedulerService service;
 
@@ -51,7 +53,22 @@ class SchedulerServiceTest {
         assertEquals(TurnOnCommand.class, scheduleScenario.getCommandsToRun().get(0).getClass());
     }
 
+    @Test
+    public void shouldCreateDurableScheduleScenarioWhenItSetInProperties() {
+        properties.getScenario().add(turnOnScenario());
+        properties.getDurabilityProperties().setEnable(true);
+        properties.getDurabilityProperties().setStoreFolderPath(FOLDER_PATH);
+
+        Collection<ScheduleScenario> toSchedule = service.getScenarioToSchedule();
+
+        ScheduleScenario durableScenario = toSchedule.stream().findFirst().get();
+        assertTrue(durableScenario instanceof DurableScheduleScenario);
+        assertEquals(FOLDER_PATH + "/turnon.json", ((DurableScheduleScenario) durableScenario)
+                .getScenarioStoreFileName());
+    }
+
     private Scenario turnOnScenario() {
-        return new Scenario(TURN_ON_NAME, CRON_EXP, List.of(new CommandProperties(CommandType.TURN_ON, REMOTE_HOST, 4000, Map.of())));
+        return new Scenario(TURN_ON_NAME, CRON_EXP, Collections.singletonList(new CommandProperties(CommandType.TURN_ON,
+                REMOTE_HOST, 4000, Collections.emptyMap())));
     }
 }

@@ -23,6 +23,7 @@ import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
+import java.util.TimeZone;
 
 @Configuration
 @Slf4j
@@ -73,7 +74,7 @@ public class VentoRemote implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
         schedulerService.getScenarioToSchedule().forEach(scenario -> {
-            CronTrigger trigger = new CronTrigger(scenario.getCronExp());
+            CronTrigger trigger = new CronTrigger(scenario.getCronExp(), TimeZone.getDefault());
 
             log.info("Scheduling scenario: {}, Next run at: {}", scenario, trigger.nextExecutionTime(new SimpleTriggerContext()));
             taskRegistrar.addCronTask(new CronTask(scenario, trigger));
