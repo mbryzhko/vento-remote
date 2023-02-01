@@ -15,14 +15,14 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class SchedulerServiceTest {
+class ScheduleScenarioFactoryTest {
 
     public static final String TURN_ON_NAME = "TurnOn";
     public static final String REMOTE_HOST = "localost";
     public static final String CRON_EXP = "* * *";
     public static final String FOLDER_PATH = "/foo/path";
 
-    private SchedulerService service;
+    private ScheduleScenarioFactory service;
 
     private ScheduleProperties properties;
 
@@ -33,7 +33,7 @@ class SchedulerServiceTest {
     public void setup() {
         properties = new ScheduleProperties();
 
-        service = new SchedulerService(properties, ventoClient);
+        service = new ScheduleScenarioFactory(properties, ventoClient);
     }
 
     @Test

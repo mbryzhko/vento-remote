@@ -10,13 +10,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SchedulerService {
+public class ScheduleScenarioFactory {
 
     private final ScheduleProperties properties;
 
     private final VentoClient ventoClient;
 
-    public SchedulerService(ScheduleProperties properties, VentoClient ventoClient) {
+    public ScheduleScenarioFactory(ScheduleProperties properties, VentoClient ventoClient) {
         this.properties = properties;
         this.ventoClient = ventoClient;
     }
