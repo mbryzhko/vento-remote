@@ -1,11 +1,12 @@
 package org.bma.vento;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.client.RetryableVentoClient;
 import org.bma.vento.client.VentoClient;
 import org.bma.vento.schedule.ScheduleProperties;
-import org.bma.vento.schedule.SchedulerService;
+import org.bma.vento.schedule.ScheduleScenarioFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -23,6 +24,7 @@ import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.TimeZone;
 
 @Configuration
@@ -40,25 +42,29 @@ public class VentoRemote implements SchedulingConfigurer {
     }
 
     @Autowired
-    private SchedulerService schedulerService;
+    private ScheduleScenarioFactory scheduleScenarioFactory;
 
     @Bean
-    public ScheduleProperties scheduleProperties(ResourceLoader resourceLoader) throws IOException {
+    public ScheduleProperties scheduleProperties(ResourceLoader resourceLoader) {
         log.debug("Loading scheduling properties from: {}", schedulePropertiedFileName);
 
-        ScheduleProperties properties = new Yaml()
-                .loadAs(resourceLoader
-                                .getResource(schedulePropertiedFileName).getInputStream(),
-                        ScheduleProperties.class);
+        InputStream propsInputStream = null;
+        try {
+            propsInputStream = resourceLoader.getResource(schedulePropertiedFileName).getInputStream();
+            ScheduleProperties properties = ScheduleProperties.createFrom(propsInputStream);
 
-        log.info("Loaded properties: {}", properties);
-
-        return properties;
+            log.info("Loaded properties: {}", properties);
+            return properties;
+        } catch (IOException e) {
+            throw new IllegalStateException("Error loading properties from: " + schedulePropertiedFileName, e);
+        } finally {
+            IOUtils.closeQuietly(propsInputStream);
+        }
     }
 
     @Bean
-    public SchedulerService schedulerService(ScheduleProperties scheduleProperties, VentoClient ventoClient) {
-        return new SchedulerService(scheduleProperties, ventoClient);
+    public ScheduleScenarioFactory schedulerService(ScheduleProperties scheduleProperties, VentoClient ventoClient) {
+        return new ScheduleScenarioFactory(scheduleProperties, ventoClient);
     }
 
     @Bean
@@ -73,7 +79,7 @@ public class VentoRemote implements SchedulingConfigurer {
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        schedulerService.getScenarioToSchedule().forEach(scenario -> {
+        scheduleScenarioFactory.getScenarioToSchedule().forEach(scenario -> {
             CronTrigger trigger = new CronTrigger(scenario.getCronExp(), TimeZone.getDefault());
 
             log.info("Scheduling scenario: {}, Next run at: {}", scenario, trigger.nextExecutionTime(new SimpleTriggerContext()));
