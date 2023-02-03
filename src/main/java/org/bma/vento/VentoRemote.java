@@ -7,6 +7,7 @@ import org.bma.vento.client.RetryableVentoClient;
 import org.bma.vento.client.VentoClient;
 import org.bma.vento.schedule.ScheduleProperties;
 import org.bma.vento.schedule.ScheduleScenarioFactory;
+import org.bma.vento.schedule.SchedulingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -31,16 +32,12 @@ import java.util.TimeZone;
 @Configuration
 @Slf4j
 @EnableScheduling
-public class VentoRemote implements SchedulingConfigurer {
+public class VentoRemote {
     // VENTO_SCHEDULE
     private static final String SCHEDULE_PROP_FILE = "vento.schedule";
 
     @Value("${" + SCHEDULE_PROP_FILE + ":classpath:/schedule.yaml}")
     private String schedulePropertiedFileName;
-
-    public static void main(String[] args) {
-        new AnnotationConfigApplicationContext("org.bma.vento");
-    }
 
     @Autowired
     private ScheduleScenarioFactory scheduleScenarioFactory;
@@ -64,7 +61,7 @@ public class VentoRemote implements SchedulingConfigurer {
     }
 
     @Bean
-    public ScheduleScenarioFactory schedulerService(ScheduleProperties scheduleProperties, VentoClient ventoClient) {
+    public ScheduleScenarioFactory scheduleScenarioFactory(ScheduleProperties scheduleProperties, VentoClient ventoClient) {
         return new ScheduleScenarioFactory(scheduleProperties, ventoClient);
     }
 
@@ -79,13 +76,12 @@ public class VentoRemote implements SchedulingConfigurer {
         return new ConcurrentTaskScheduler(); //single threaded by default
     }
 
-    @Override
-    public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        scheduleScenarioFactory.getScenarioToSchedule().forEach(scenario -> {
-            CronTrigger trigger = new CronTrigger(scenario.getCronExp(), TimeZone.getDefault());
+    @Bean
+    public SchedulingService schedulingService(ScheduleScenarioFactory factory) {
+        return new SchedulingService(factory);
+    }
 
-            log.info("Scheduling scenario: {}, Next run at: {}", scenario, trigger.nextExecutionTime(new SimpleTriggerContext()));
-            taskRegistrar.addCronTask(new CronTask(scenario, trigger));
-        });
+    public static void main(String[] args) {
+        new AnnotationConfigApplicationContext("org.bma.vento");
     }
 }
