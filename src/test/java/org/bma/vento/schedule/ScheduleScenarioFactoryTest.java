@@ -61,8 +61,6 @@ class ScheduleScenarioFactoryTest {
 
         ScheduleScenario durableScenario = toSchedule.stream().findFirst().get();
         assertTrue(durableScenario instanceof DurableScheduleScenario);
-        assertEquals(FOLDER_PATH + "/turnon.json", ((DurableScheduleScenario) durableScenario)
-                .getScenarioStoreFileName());
     }
 
     private Scenario turnOnScenario() {

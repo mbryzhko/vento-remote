@@ -16,4 +16,8 @@ public class ScheduleProperties {
     public static ScheduleProperties createFrom(InputStream stream) {
         return new Yaml().loadAs(stream, ScheduleProperties.class);
     }
+
+    public boolean isDurabilityEnabled() {
+        return durabilityProperties != null && durabilityProperties.isEnable();
+    }
 }

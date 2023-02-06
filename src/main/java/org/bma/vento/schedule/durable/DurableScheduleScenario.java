@@ -4,13 +4,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.bma.vento.cmd.Command;
 import org.bma.vento.schedule.ScheduleScenario;
-import org.springframework.util.SerializationUtils;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,19 +19,15 @@ import java.util.List;
 @Slf4j
 public class DurableScheduleScenario extends ScheduleScenario {
 
-    /**
-     * Filename where state of the scenario is stored on Filesystem.
-     */
-    private final String scenarioStoreFileName;
-
     @Setter
     private Clock clock = Clock.systemDefaultZone();
+    private final ScenarioStateStore scenarioStateStore;
 
-    public DurableScheduleScenario(@NonNull String schedulingFolderPath,
-                                   @NonNull String name, String cron, List<Command> commands) {
+    public DurableScheduleScenario(@NonNull String name, String cron, List<Command> commands,
+                                   ScenarioStateStore scenarioStateStore) {
         super(name, cron, commands);
 
-        this.scenarioStoreFileName = schedulingFolderPath + File.separator + sanitizeFileName(name) + ".json";
+        this.scenarioStateStore = scenarioStateStore;
     }
 
     private static String sanitizeFileName(String fileName) {
@@ -49,15 +41,7 @@ public class DurableScheduleScenario extends ScheduleScenario {
     }
 
     private void writeOutScenarioState() {
-        try {
-            byte[] data = SerializationUtils.serialize(createScenarioState());
-
-            File storeFile = new File(scenarioStoreFileName);
-
-            FileUtils.writeByteArrayToFile(storeFile, data);
-        } catch (IOException e) {
-            log.error("Cannot write scenario: {} last execute time. File: {}", getName(), scenarioStoreFileName, e);
-        }
+        scenarioStateStore.writeState(getName(), createScenarioState());
     }
 
     private ScenarioState createScenarioState() {

@@ -5,6 +5,9 @@ import org.bma.vento.cmd.Command;
 import org.bma.vento.cmd.TurnOffCommand;
 import org.bma.vento.cmd.TurnOnCommand;
 import org.bma.vento.schedule.durable.DurableScheduleScenario;
+import org.bma.vento.schedule.durable.FileScenarioStateStore;
+import org.bma.vento.schedule.durable.NoOpScenarioStateStore;
+import org.bma.vento.schedule.durable.ScenarioStateStore;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,9 +19,14 @@ public class ScheduleScenarioFactory {
 
     private final VentoClient ventoClient;
 
+    private final ScenarioStateStore scenarioStateStore;
+
     public ScheduleScenarioFactory(ScheduleProperties properties, VentoClient ventoClient) {
         this.properties = properties;
         this.ventoClient = ventoClient;
+        this.scenarioStateStore = properties.isDurabilityEnabled()
+                ? new FileScenarioStateStore(properties.getDurabilityProperties().getStoreFolderPath())
+                : new NoOpScenarioStateStore();
     }
 
     public Collection<ScheduleScenario> getScenarioToSchedule() {
@@ -30,9 +38,8 @@ public class ScheduleScenarioFactory {
 
     private ScheduleScenario createScenarioScheduleInfo(Scenario scenario) {
         List<Command> commands = createCommandInstances(scenario.getCommands());
-        if (properties.getDurabilityProperties().isEnable()) {
-            return new DurableScheduleScenario(properties.getDurabilityProperties().getStoreFolderPath(),
-                    scenario.getName(), scenario.getCron(), commands);
+        if (properties.isDurabilityEnabled()) {
+            return new DurableScheduleScenario(scenario.getName(), scenario.getCron(), commands, scenarioStateStore);
         } else {
             return new ScheduleScenario(scenario.getName(), scenario.getCron(), commands);
         }
