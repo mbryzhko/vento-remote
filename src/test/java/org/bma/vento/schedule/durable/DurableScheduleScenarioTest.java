@@ -24,12 +24,16 @@ class DurableScheduleScenarioTest {
     private static final Instant SCENARIO_RUN_DATETIME = Instant.now();
 
     private DurableScheduleScenario scenario;
+
+    private FileScenarioStateStore store;
+
     @TempDir
     public File scheduleFolderPath;
 
     @BeforeEach
     public void setUp() {
-        scenario = new DurableScheduleScenario(scheduleFolderPath.getPath(), SCENARIO_NAME, "", Collections.emptyList());
+        store = new FileScenarioStateStore(scheduleFolderPath.getPath());
+        scenario = new DurableScheduleScenario(SCENARIO_NAME, "", Collections.emptyList(), store);
     }
 
     @Test
@@ -38,7 +42,7 @@ class DurableScheduleScenarioTest {
 
         scenario.run();
 
-        File expectedScenarioStateFile = new File(scenario.getScenarioStoreFileName());
+        File expectedScenarioStateFile = new File(scheduleFolderPath.getPath() + "/Foo.json");
         assertTrue(expectedScenarioStateFile.exists());
 
         byte[] scenarioRawState = FileUtils.readFileToByteArray(expectedScenarioStateFile);
@@ -48,8 +52,9 @@ class DurableScheduleScenarioTest {
 
     @Test
     public void nameOfFileShouldBeSanitized() {
-        scenario = new DurableScheduleScenario(scheduleFolderPath.getPath(), "a!b@c#d$e$f%g h", "", Collections.emptyList());
+        store.writeState("a!b@c#d$e$f%g h", new ScenarioState(LocalDateTime.now()));
 
-        assertEquals(scheduleFolderPath.getPath() + "/a_b_c_d_e_f_g_h.json", scenario.getScenarioStoreFileName());
+        File expectedScenarioStateFile = new File(scheduleFolderPath.getPath() + "/a_b_c_d_e_f_g_h.json");
+        assertTrue(expectedScenarioStateFile.exists());
     }
 }
