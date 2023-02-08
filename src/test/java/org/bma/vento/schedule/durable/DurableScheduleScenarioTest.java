@@ -42,7 +42,7 @@ class DurableScheduleScenarioTest {
 
         scenario.run();
 
-        File expectedScenarioStateFile = new File(scheduleFolderPath.getPath() + "/Foo.json");
+        File expectedScenarioStateFile = new File(scheduleFolderPath.getPath() + "/foo.json");
         assertTrue(expectedScenarioStateFile.exists());
 
         byte[] scenarioRawState = FileUtils.readFileToByteArray(expectedScenarioStateFile);
