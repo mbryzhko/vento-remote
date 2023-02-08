@@ -17,17 +17,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
-import org.springframework.scheduling.config.CronTask;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
-import org.springframework.scheduling.support.CronTrigger;
-import org.springframework.scheduling.support.SimpleTriggerContext;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.TimeZone;
 
 @Configuration
 @Slf4j
@@ -77,8 +70,8 @@ public class VentoRemote {
     }
 
     @Bean
-    public SchedulingService schedulingService(ScheduleScenarioFactory factory) {
-        return new SchedulingService(factory);
+    public SchedulingService schedulingService(ScheduleScenarioFactory factory, ScheduleProperties scheduleProperties) {
+        return new SchedulingService(factory, scheduleProperties);
     }
 
     public static void main(String[] args) {

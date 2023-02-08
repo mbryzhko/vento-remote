@@ -38,4 +38,9 @@ public class ScheduleScenario implements Runnable {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return name + " (" + cronExp + ")";
+    }
 }

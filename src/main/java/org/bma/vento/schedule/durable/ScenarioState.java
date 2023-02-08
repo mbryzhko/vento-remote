@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Value
-class ScenarioState implements Serializable {
+public class ScenarioState implements Serializable {
     static final long serialVersionUID = 1;
 
     @NonNull

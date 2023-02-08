@@ -8,14 +8,14 @@ import org.springframework.util.SerializationUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DurableScheduleScenarioTest {
 
@@ -37,7 +37,7 @@ class DurableScheduleScenarioTest {
     }
 
     @Test
-    public void shouldWriteDownLastExecutionTimeToFile() throws IOException {
+    public void shouldWriteDownLastExecutionTimeToStorage() throws IOException {
         scenario.setClock(Clock.fixed(SCENARIO_RUN_DATETIME, ZoneId.systemDefault()));
 
         scenario.run();
@@ -48,6 +48,29 @@ class DurableScheduleScenarioTest {
         byte[] scenarioRawState = FileUtils.readFileToByteArray(expectedScenarioStateFile);
         ScenarioState scenarioState = (ScenarioState) SerializationUtils.deserialize(scenarioRawState);
         assertEquals(LocalDateTime.ofInstant(SCENARIO_RUN_DATETIME, ZoneId.systemDefault()), scenarioState.getLastExecution());
+    }
+
+    @Test
+    public void shouldReadLastExecutionTimeFromStorage() {
+        scenario.setClock(Clock.fixed(SCENARIO_RUN_DATETIME, ZoneId.systemDefault()));
+
+        scenario.run();
+
+        assertEquals(LocalDateTime.ofInstant(SCENARIO_RUN_DATETIME, ZoneId.systemDefault()), scenario.getLastExecutionTime().get());
+    }
+
+    @Test
+    public void shouldReturnEmptyResultIfNoStateWasStored() throws IOException {
+        File expectedScenarioStateFile = new File(scheduleFolderPath.getPath() + "/Foo.json");
+        FileUtils.writeStringToFile(expectedScenarioStateFile, "broken state", StandardCharsets.UTF_8);
+
+        assertFalse(scenario.getLastExecutionTime().isPresent());
+    }
+
+    @Test
+    public void shouldReturnEmptyResultIfStateCannotBeRead() {
+        // Empty state, no previous run
+        assertFalse(scenario.getLastExecutionTime().isPresent());
     }
 
     @Test

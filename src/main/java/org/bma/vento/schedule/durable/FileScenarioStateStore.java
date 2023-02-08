@@ -20,24 +20,43 @@ public class FileScenarioStateStore implements ScenarioStateStore {
     private final String schedulingFolderPath;
 
     @Override
-    public ScenarioState readState(String scenarioName) {
-        return null;
+    public ScenarioState readState(@NonNull String scenarioName) {
+        String scenarioStoreFileName = getScenarioStoreFileName(scenarioName);
+
+        try {
+            File storeFile = new File(scenarioStoreFileName);
+
+            if (!storeFile.exists()) {
+                log.warn("State of scenario not found: {}, file: {}", scenarioName, scenarioStoreFileName);
+                return null;
+            }
+
+            byte[] rawState = FileUtils.readFileToByteArray(storeFile);
+            return (ScenarioState) SerializationUtils.deserialize(rawState);
+        } catch (IOException | RuntimeException e) {
+            log.error("Cannot read state of scenario: {}, file: {}", scenarioName, scenarioStoreFileName, e);
+            return null;
+        }
     }
 
     @Override
-    public void writeState(String scenarioName, ScenarioState state) {
+    public void writeState(@NonNull String scenarioName, @NonNull ScenarioState state) {
+        String scenarioStoreFileName = getScenarioStoreFileName(scenarioName);
 
-        String scenarioStoreFileName = schedulingFolderPath + File.separator + sanitizeFileName(scenarioName) + ".json";
+        log.debug("Writing state of scenario: {}, state: {}, file: {}", scenarioName, state, scenarioStoreFileName);
 
         try {
-            byte[] data = SerializationUtils.serialize(state);
-
             File storeFile = new File(scenarioStoreFileName);
 
-            FileUtils.writeByteArrayToFile(storeFile, data);
-        } catch (IOException e) {
-            log.error("Cannot write scenario: {} last execute time. File: {}", scenarioName, scenarioStoreFileName, e);
+            byte[] rawState = SerializationUtils.serialize(state);
+            FileUtils.writeByteArrayToFile(storeFile, rawState);
+        } catch (IOException | RuntimeException e) {
+            log.error("Cannot write state of scenario: {}, file: {}", scenarioName, scenarioStoreFileName, e);
         }
+    }
+
+    private String getScenarioStoreFileName(String scenarioName) {
+        return schedulingFolderPath + File.separator + sanitizeFileName(scenarioName) + ".json";
     }
 
     private static String sanitizeFileName(String fileName) {

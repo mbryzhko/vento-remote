@@ -10,6 +10,7 @@ import org.bma.vento.schedule.ScheduleScenario;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Extends {@code ScheduleScenario} with durability facilities.
@@ -30,14 +31,14 @@ public class DurableScheduleScenario extends ScheduleScenario {
         this.scenarioStateStore = scenarioStateStore;
     }
 
-    private static String sanitizeFileName(String fileName) {
-        return fileName.replaceAll("[^a-zA-Z0-9.-]", "_").toLowerCase();
-    }
-
     @Override
     public void run() {
         super.run();
         writeOutScenarioState();
+    }
+
+    public Optional<LocalDateTime> getLastExecutionTime() {
+        return Optional.ofNullable(scenarioStateStore.readState(getName())).map(ScenarioState::getLastExecution);
     }
 
     private void writeOutScenarioState() {
@@ -46,5 +47,10 @@ public class DurableScheduleScenario extends ScheduleScenario {
 
     private ScenarioState createScenarioState() {
         return new ScenarioState(LocalDateTime.now(clock));
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " Durable";
     }
 }
