@@ -4,6 +4,7 @@ import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.cmd.CommandType;
 import org.bma.vento.cmd.TurnOnCommand;
 import org.bma.vento.schedule.durable.DurableScheduleScenario;
+import org.bma.vento.schedule.durable.ScenarioStateStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,11 +30,14 @@ class ScheduleScenarioFactoryTest {
     @Mock
     private DefaultVentoClient ventoClient;
 
+    @Mock
+    private ScenarioStateStore store;
+
     @BeforeEach
     public void setup() {
         properties = new ScheduleProperties();
 
-        service = new ScheduleScenarioFactory(properties, ventoClient);
+        service = new ScheduleScenarioFactory(properties, ventoClient, store);
     }
 
     @Test
@@ -53,8 +57,8 @@ class ScheduleScenarioFactoryTest {
     @Test
     public void shouldCreateDurableScheduleScenarioWhenItSetInProperties() {
         properties.getScenario().add(turnOnScenario());
-        properties.getDurabilityProperties().setEnable(true);
-        properties.getDurabilityProperties().setStoreFolderPath(FOLDER_PATH);
+        properties.getDurability().setEnable(true);
+        properties.getDurability().setStoreFolderPath(FOLDER_PATH);
 
         Collection<ScheduleScenario> toSchedule = service.getScenarioToSchedule();
 

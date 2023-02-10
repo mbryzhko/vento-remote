@@ -5,8 +5,6 @@ import org.bma.vento.cmd.Command;
 import org.bma.vento.cmd.TurnOffCommand;
 import org.bma.vento.cmd.TurnOnCommand;
 import org.bma.vento.schedule.durable.DurableScheduleScenario;
-import org.bma.vento.schedule.durable.FileScenarioStateStore;
-import org.bma.vento.schedule.durable.NoOpScenarioStateStore;
 import org.bma.vento.schedule.durable.ScenarioStateStore;
 
 import java.util.Collection;
@@ -21,12 +19,12 @@ public class ScheduleScenarioFactory {
 
     private final ScenarioStateStore scenarioStateStore;
 
-    public ScheduleScenarioFactory(ScheduleProperties properties, VentoClient ventoClient) {
+    public ScheduleScenarioFactory(ScheduleProperties properties,
+                                   VentoClient ventoClient,
+                                   ScenarioStateStore scenarioStateStore) {
         this.properties = properties;
         this.ventoClient = ventoClient;
-        this.scenarioStateStore = properties.isDurabilityEnabled()
-                ? new FileScenarioStateStore(properties.getDurabilityProperties().getStoreFolderPath())
-                : new NoOpScenarioStateStore();
+        this.scenarioStateStore = scenarioStateStore;
     }
 
     public Collection<ScheduleScenario> getScenarioToSchedule() {
