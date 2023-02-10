@@ -64,7 +64,7 @@ class SchedulingServiceTest {
 
     @Test
     public void shouldTriggerMissedScenarioRunWhenDurable() {
-        scheduleProperties.getDurabilityProperties().setEnable(true);
+        scheduleProperties.getDurability().setEnable(true);
 
         ScheduleScenario s = durableScenario();
         ScheduleScenario s2 = durableScenario1();
@@ -84,7 +84,7 @@ class SchedulingServiceTest {
 
     @Test
     public void shouldNotHandleMissingRunsWhenNoLastExecutionTime() {
-        scheduleProperties.getDurabilityProperties().setEnable(true);
+        scheduleProperties.getDurability().setEnable(true);
 
         givenScheduledScenario(durableScenario());
 
@@ -97,7 +97,7 @@ class SchedulingServiceTest {
 
     @Test
     public void shouldNotHandleMissingRunsWhenDurabilityIsNotEnabled() {
-        scheduleProperties.getDurabilityProperties().setEnable(false);
+        scheduleProperties.getDurability().setEnable(false);
 
         givenScheduledScenario(simpleScenario());
 

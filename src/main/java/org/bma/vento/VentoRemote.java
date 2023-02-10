@@ -8,6 +8,9 @@ import org.bma.vento.client.VentoClient;
 import org.bma.vento.schedule.ScheduleProperties;
 import org.bma.vento.schedule.ScheduleScenarioFactory;
 import org.bma.vento.schedule.SchedulingService;
+import org.bma.vento.schedule.durable.FileScenarioStateStore;
+import org.bma.vento.schedule.durable.NoOpScenarioStateStore;
+import org.bma.vento.schedule.durable.ScenarioStateStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -54,8 +57,10 @@ public class VentoRemote {
     }
 
     @Bean
-    public ScheduleScenarioFactory scheduleScenarioFactory(ScheduleProperties scheduleProperties, VentoClient ventoClient) {
-        return new ScheduleScenarioFactory(scheduleProperties, ventoClient);
+    public ScheduleScenarioFactory scheduleScenarioFactory(ScheduleProperties scheduleProperties,
+                                                           VentoClient ventoClient,
+                                                           ScenarioStateStore scenarioStateStore) {
+        return new ScheduleScenarioFactory(scheduleProperties, ventoClient, scenarioStateStore);
     }
 
     @Bean
@@ -72,6 +77,13 @@ public class VentoRemote {
     @Bean
     public SchedulingService schedulingService(ScheduleScenarioFactory factory, ScheduleProperties scheduleProperties) {
         return new SchedulingService(factory, scheduleProperties);
+    }
+
+    @Bean
+    public ScenarioStateStore scenarioStateStore(ScheduleProperties scheduleProperties) {
+        return scheduleProperties.isDurabilityEnabled()
+                ? new FileScenarioStateStore(scheduleProperties.getDurability().getStoreFolderPath())
+                : new NoOpScenarioStateStore();
     }
 
     public static void main(String[] args) {

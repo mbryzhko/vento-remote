@@ -10,7 +10,7 @@ import java.util.Collection;
 @Data
 public class ScheduleProperties {
 
-    private DurabilityProperties durabilityProperties = new DurabilityProperties();
+    private DurabilityProperties durability = new DurabilityProperties();
     private Collection<Scenario> scenario = new ArrayList<>();
 
     public static ScheduleProperties createFrom(InputStream stream) {
@@ -18,6 +18,6 @@ public class ScheduleProperties {
     }
 
     public boolean isDurabilityEnabled() {
-        return durabilityProperties != null && durabilityProperties.isEnable();
+        return durability != null && durability.isEnable();
     }
 }
