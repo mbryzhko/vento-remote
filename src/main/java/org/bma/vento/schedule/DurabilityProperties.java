@@ -14,5 +14,5 @@ public class DurabilityProperties {
      * The service will store date time of last scenario run.
      */
     private boolean enable = false;
-    private String storeFolderPath = "classpath:/schedule-store";
+    private String storeFolderPath = "schedule-store";
 }
