@@ -34,7 +34,7 @@ public class FileScenarioStateStore implements ScenarioStateStore {
             byte[] rawState = FileUtils.readFileToByteArray(storeFile);
             return (ScenarioState) SerializationUtils.deserialize(rawState);
         } catch (IOException | RuntimeException e) {
-            log.error("Cannot read state of scenario: {}, file: {}", scenarioName, scenarioStoreFileName, e);
+            log.error("Cannot read state of scenario: {}, file: {}, message: {}", scenarioName, scenarioStoreFileName, e.getMessage());
             return null;
         }
     }

@@ -21,6 +21,8 @@ import java.util.Set;
 @ExtendWith(SpringExtension.class)
 class VentoRemoteIntegrationTest {
 
+    private static final String CRON_EVERY_2_MINUTES = "0 0/2 * ? * *";
+
     @Autowired
     ScheduledTaskHolder scheduledTaskHolder;
 
@@ -33,6 +35,6 @@ class VentoRemoteIntegrationTest {
 
         Assertions.assertNotNull(task.getTask().getRunnable());
         Assertions.assertTrue(task.getTask() instanceof CronTask);
-        Assertions.assertEquals("0 0/2 * ? * *", ((CronTask)task.getTask()).getExpression());
+        Assertions.assertEquals(CRON_EVERY_2_MINUTES, ((CronTask)task.getTask()).getExpression());
     }
 }

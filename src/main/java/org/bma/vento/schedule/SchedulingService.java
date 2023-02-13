@@ -54,6 +54,7 @@ public class SchedulingService implements SchedulingConfigurer {
             Date nextExecutionTime = deriveNextExecutionTime(scenario, lastExecTime);
 
             if (nextExecutionTime.before(new Date())) {
+                log.info("Running missed execution of scenario: {}, run at: {}", scenario.getName(), nextExecutionTime);
                 scenario.run();
                 scenarioMissedExecution.put(nextExecutionTime, scenario);
             }
