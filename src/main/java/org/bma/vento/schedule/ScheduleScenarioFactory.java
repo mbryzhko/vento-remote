@@ -4,20 +4,27 @@ import org.bma.vento.client.VentoClient;
 import org.bma.vento.cmd.Command;
 import org.bma.vento.cmd.TurnOffCommand;
 import org.bma.vento.cmd.TurnOnCommand;
+import org.bma.vento.schedule.durable.DurableScheduleScenario;
+import org.bma.vento.schedule.durable.ScenarioStateStore;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SchedulerService {
+public class ScheduleScenarioFactory {
 
     private final ScheduleProperties properties;
 
     private final VentoClient ventoClient;
 
-    public SchedulerService(ScheduleProperties properties, VentoClient ventoClient) {
+    private final ScenarioStateStore scenarioStateStore;
+
+    public ScheduleScenarioFactory(ScheduleProperties properties,
+                                   VentoClient ventoClient,
+                                   ScenarioStateStore scenarioStateStore) {
         this.properties = properties;
         this.ventoClient = ventoClient;
+        this.scenarioStateStore = scenarioStateStore;
     }
 
     public Collection<ScheduleScenario> getScenarioToSchedule() {
@@ -28,7 +35,12 @@ public class SchedulerService {
     }
 
     private ScheduleScenario createScenarioScheduleInfo(Scenario scenario) {
-        return new ScheduleScenario(scenario.getName(), scenario.getCron(), createCommandInstances(scenario.getCommands()));
+        List<Command> commands = createCommandInstances(scenario.getCommands());
+        if (properties.isDurabilityEnabled()) {
+            return new DurableScheduleScenario(scenario.getName(), scenario.getCron(), commands, scenarioStateStore);
+        } else {
+            return new ScheduleScenario(scenario.getName(), scenario.getCron(), commands);
+        }
     }
 
     private List<Command> createCommandInstances(List<CommandProperties> commands) {

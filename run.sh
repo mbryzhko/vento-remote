@@ -1,9 +1,15 @@
 #!/bin/bash
 
-VENTO_CONFIG_PATH=${VENTO_CONFIG_PATH:-"./src/main/resources/schedule.yaml"}
-VENTO_VERSION=${VENTO_VERSION:-"1.11"}
+VENTO_CONFIG_PATH=${VENTO_CONFIG_PATH:-"$(pwd)/src/main/resources/schedule.yaml"}
+VENTO_VERSION=${VENTO_VERSION:-"latest"}
+VENTO_IMAGE=${VENTO_IMAGE:-"docker.pkg.github.com/mbryzhko/vento-remote/vento-remote-arm32v6"}
+VENTO_TZ="Europe/Kiev"
+if [ -f "/etc/timezone" ]; then
+    VENTO_TZ="$(cat /etc/timezone)"
+fi
 
-docker run -d --name vento-remote -v ${VENTO_CONFIG_PATH}:/usr/share/vento-remote/schedule.yaml \
+sudo docker run -d --name vento-remote -v $VENTO_CONFIG_PATH:/usr/share/vento-remote/schedule.yaml \
   -e VENTO_SCHEDULE="file:/usr/share/vento-remote/schedule.yaml" \
-  -e TZ="$(date +%Z)" \
-  docker.pkg.github.com/mbryzhko/vento-remote/vento-remote-arm32v6:$VENTO_VERSION
+  -e TZ="$VENTO_TZ" \
+  --restart=always \
+  "$VENTO_IMAGE":"$VENTO_VERSION"

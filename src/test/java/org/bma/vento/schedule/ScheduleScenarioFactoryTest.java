@@ -3,6 +3,8 @@ package org.bma.vento.schedule;
 import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.cmd.CommandType;
 import org.bma.vento.cmd.TurnOnCommand;
+import org.bma.vento.schedule.durable.DurableScheduleScenario;
+import org.bma.vento.schedule.durable.ScenarioStateStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,29 +17,33 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class SchedulerServiceTest {
+class ScheduleScenarioFactoryTest {
 
     public static final String TURN_ON_NAME = "TurnOn";
     public static final String REMOTE_HOST = "localost";
     public static final String CRON_EXP = "* * *";
+    public static final String FOLDER_PATH = "/foo/path";
 
-    private SchedulerService service;
+    private ScheduleScenarioFactory service;
 
     private ScheduleProperties properties;
 
     @Mock
     private DefaultVentoClient ventoClient;
 
+    @Mock
+    private ScenarioStateStore store;
+
     @BeforeEach
     public void setup() {
         properties = new ScheduleProperties();
 
-        service = new SchedulerService(properties, ventoClient);
+        service = new ScheduleScenarioFactory(properties, ventoClient, store);
     }
 
     @Test
     public void creatingListOfScheduledScenario() {
-        properties.setScenario(Collections.singletonList(turnOnScenario()));
+        properties.getScenario().add(turnOnScenario());
 
         Collection<ScheduleScenario> toSchedule = service.getScenarioToSchedule();
 
@@ -49,8 +55,20 @@ class SchedulerServiceTest {
         assertEquals(TurnOnCommand.class, scheduleScenario.getCommandsToRun().get(0).getClass());
     }
 
-    private Scenario turnOnScenario() {
-        return new Scenario(TURN_ON_NAME, CRON_EXP, Collections.singletonList(new CommandProperties(CommandType.TURN_ON, REMOTE_HOST, 4000, Collections.emptyMap())));
+    @Test
+    public void shouldCreateDurableScheduleScenarioWhenItSetInProperties() {
+        properties.getScenario().add(turnOnScenario());
+        properties.getDurability().setEnable(true);
+        properties.getDurability().setStoreFolderPath(FOLDER_PATH);
+
+        Collection<ScheduleScenario> toSchedule = service.getScenarioToSchedule();
+
+        ScheduleScenario durableScenario = toSchedule.stream().findFirst().get();
+        assertTrue(durableScenario instanceof DurableScheduleScenario);
     }
 
+    private Scenario turnOnScenario() {
+        return new Scenario(TURN_ON_NAME, CRON_EXP, Collections.singletonList(new CommandProperties(CommandType.TURN_ON,
+                REMOTE_HOST, 4000, Collections.emptyMap())));
+    }
 }
