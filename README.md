@@ -9,11 +9,17 @@ See also [Spec](https://blaubergventilatoren.de/uploads/download/ventoexpertduow
 Download run script.  
 `wget https://github.com/mbryzhko/vento-remote/blob/arm32v6/run.sh`
 
-Checkout the latest version of [vento-remote-arm32v6](https://github.com/mbryzhko/vento-remote/packages/526550/versions) release and set env var: `VENTO_VERSION`.  
-`export VENTO_VERSION=1.9`
+Checkout the latest version of [vento-remote-arm32v6](https://github.com/mbryzhko/vento-remote/pkgs/container/vento-remote%2Fvento-remote-arm32v6) release and set env var: `VENTO_VERSION`.  
+```
+export VENTO_VERSION=latest # or specific version
+export VENTO_IMAGE=ghcr.io/mbryzhko/vento-remote/vento-remote-arm32v6
+```
 
 Create config file. For example:
 ```
+durability:
+  enable: true # enable durability, default: false
+  storeFolderPath: "/usr/share/vento-remote"
 scenario:
   - name: Night
     cron: 0 0 23 ? * *
@@ -37,3 +43,7 @@ Specify config file location.
 Run.  
 `./run.sh`
 
+### Durability 
+Durability allows the storage of the state of a scenario so that, 
+during the next scheduler start, 
+it can check whether the scenario has missed executions and run them.

@@ -1,22 +1,14 @@
+durability:
+  enable: true
+  storeFolderPath: "/usr/share/vento-remote"
 scenario:
-  - name: Next
+  - name: On
     cron: 0 0/2 * ? * *
     commands:
       - type: TURN_ON
-        host: 192.168.1.101
-  - name: Night
-    cron: 0 0 23 ? * *
-    commands:
-      - type: TURN_ON
-        host: 192.168.1.101
-      - type: TURN_ON
-        host: 192.168.1.102
-  - name: Morning
-    cron: 0 0 8 ? * *
+        host: 192.168.1.104
+  - name: Off
+    cron: 30 0/2 * ? * *
     commands:
       - type: TURN_OFF
-        host: 192.168.1.101
-      - type: TURN_OFF
-        host: 192.168.1.102
-
-
+        host: 192.168.1.104
