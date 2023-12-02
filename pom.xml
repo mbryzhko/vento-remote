@@ -13,7 +13,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <lombok.version>1.18.4</lombok.version>
-        <spring.framework.version>5.1.4.RELEASE</spring.framework.version>
+        <spring.framework.version>5.3.31</spring.framework.version>
         <junit.version>5.4.2</junit.version>
         <mockito.version>2.24.0</mockito.version>
         <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
@@ -21,8 +21,8 @@
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
-        <logback.version>1.2.3</logback.version>
-        <snake-yaml.version>1.27</snake-yaml.version>
+        <logback.version>1.2.9</logback.version>
+        <snake-yaml.version>2.2</snake-yaml.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
 
         <docker-img-name.x86>lpicanco/java11-alpine:11.0</docker-img-name.x86>
@@ -44,6 +44,12 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+            <version>${spring.framework.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
             <version>${spring.framework.version}</version>
             <scope>compile</scope>
         </dependency>

@@ -13,10 +13,10 @@ Supported architecture is [ARM32v6](https://github.com/mbryzhko/vento-remote/tre
 - arm32v7
 - [arm32v6](https://github.com/mbryzhko/vento-remote/tree/arm32v6)
 
-Checkout the latest version of [vento-remote-arm32v6](https://github.com/mbryzhko/vento-remote/pkgs/container/vento-remote%2Fvento-remote-arm32v6) release and set env var: `VENTO_VERSION`.  
+Checkout the latest version of [vento-remote-x86](https://github.com/mbryzhko/vento-remote/pkgs/container/vento-remote%2Fvento-remote-x86) release and set env var: `VENTO_VERSION`.  
 ```
 export VENTO_VERSION=latest # or specific version
-export VENTO_IMAGE=ghcr.io/mbryzhko/vento-remote/vento-remote-arm32v6
+export VENTO_IMAGE=ghcr.io/mbryzhko/vento-remote/vento-remote-x86
 ```
 
 **Create config file.** For example:
