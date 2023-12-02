@@ -4,7 +4,7 @@
 
     <groupId>org.bma</groupId>
     <artifactId>vento-remote</artifactId>
-    <version>1.17</version>
+    <version>1.18-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -223,7 +223,7 @@
         <developerConnection>
             scm:git:https://github.com/mbryzhko/vento-remote.git
         </developerConnection>
-        <tag>vento-remote-arm32v6-1.17</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
