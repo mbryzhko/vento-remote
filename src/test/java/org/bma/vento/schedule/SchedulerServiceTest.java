@@ -10,10 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,7 +65,7 @@ class SchedulerServiceTest {
     }
 
     private Scenario turnOnScenario() {
-        return new Scenario(TURN_ON_NAME, CRON_EXP, Collections.singletonList(new CommandProperties(CommandType.TURN_ON,
+        return new Scenario(TURN_ON_NAME, CRON_EXP, List.of(new CommandProperties(CommandType.TURN_ON,
                 REMOTE_HOST, 4000, Collections.emptyMap())));
     }
 }
