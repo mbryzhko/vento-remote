@@ -13,14 +13,17 @@ Supported architecture is [ARM32v6](https://github.com/mbryzhko/vento-remote/tre
 - arm32v7
 - [arm32v6](https://github.com/mbryzhko/vento-remote/tree/arm32v6)
 
-**Download run script.**  
-`wget https://github.com/mbryzhko/vento-remote/blob/master/run.sh`
-
-Checkout the latest version of TODO release and set env var: `VENTO_VERSION`.  
-`export VENTO_VERSION=1.9`
+Checkout the latest version of [vento-remote-x86](https://github.com/mbryzhko/vento-remote/pkgs/container/vento-remote%2Fvento-remote-x86) release and set env var: `VENTO_VERSION`.  
+```
+export VENTO_VERSION=latest # or specific version
+export VENTO_IMAGE=ghcr.io/mbryzhko/vento-remote/vento-remote-x86
+```
 
 **Create config file.** For example:
 ```
+durability:
+  enable: true # enable durability, default: false
+  storeFolderPath: "/usr/share/vento-remote"
 scenario:
   - name: Night
     cron: 0 0 23 ? * *
@@ -43,5 +46,4 @@ scenario:
 
 **Run.**  
 `./run.sh`
-
 
