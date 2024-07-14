@@ -245,7 +245,7 @@
         <developerConnection>
             scm:git:https://github.com/mbryzhko/vento-remote.git
         </developerConnection>
-        <tag>vento-remote-1.16</tag>
+        <tag>vento-remote-1.12</tag>
     </scm>
 
     <distributionManagement>
