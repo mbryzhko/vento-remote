@@ -25,7 +25,7 @@
         <snake-yaml.version>2.2</snake-yaml.version>
         <slf4j-api.version>1.7.25</slf4j-api.version>
 
-        <docker-img-name>arm32v7/adoptopenjdk:11-jre-hotspot</docker-img-name>
+        <docker-img-name>arm32v7/eclipse-temurin:11.0.23_9-jre-jammy</docker-img-name>
 
     </properties>
 
@@ -195,7 +195,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
                 <configuration>
-                    <repository>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}-x86</repository>
+                    <repository>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}-arm32v7</repository>
                     <!--suppress UnresolvedMavenProperty -->
                     <username>${env.GITHUB_ACTOR}</username>
                     <!--suppress UnresolvedMavenProperty -->
@@ -207,7 +207,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>x86</id>
+                        <id>arm32v7</id>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>
@@ -215,12 +215,12 @@
                         <configuration>
                             <tag>${project.version}</tag>
                             <buildArgs>
-                                <IMG>${docker-img-name.x86}</IMG>
+                                <IMG>${docker-img-name}</IMG>
                             </buildArgs>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>x86-tag-latest</id>
+                        <id>arm32v7-tag-latest</id>
                         <goals>
                             <goal>build</goal>
                             <goal>push</goal>
@@ -228,23 +228,10 @@
                         <configuration>
                             <tag>latest</tag>
                             <buildArgs>
-                                <IMG>${docker-img-name.x86}</IMG>
+                                <IMG>${docker-img-name}</IMG>
                             </buildArgs>
                         </configuration>
                     </execution>
-<!--                    <execution>-->
-<!--                        <id>arm32v7</id>-->
-<!--                        <goals>-->
-<!--                            <goal>build</goal>-->
-<!--                            <goal>push</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <tag>${project.version}-arm64v8</tag>-->
-<!--                            <buildArgs>-->
-<!--                                <IMG>arm32v7/openjdk:11</IMG>-->
-<!--                            </buildArgs>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
                 </executions>
             </plugin>
         </plugins>
