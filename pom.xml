@@ -4,28 +4,28 @@
 
     <groupId>org.bma</groupId>
     <artifactId>vento-remote</artifactId>
-     <version>1.16-SNAPSHOT</version>
+     <version>2.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <lombok.version>1.18.30</lombok.version>
-        <spring.framework.version>5.3.31</spring.framework.version>
-        <junit.version>5.4.2</junit.version>
-        <mockito.version>2.24.0</mockito.version>
-        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
-        <maven-failsafe-plugin.version>3.0.0-M8</maven-failsafe-plugin.version>
+        <spring.framework.version>6.1.16</spring.framework.version>
+        <junit.version>5.10.5</junit.version>
+        <mockito.version>5.14.2</mockito.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.5.2</maven-failsafe-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
-        <logback.version>1.2.9</logback.version>
+        <logback.version>1.5.12</logback.version>
         <snake-yaml.version>2.2</snake-yaml.version>
-        <slf4j-api.version>1.7.25</slf4j-api.version>
+        <slf4j-api.version>2.0.16</slf4j-api.version>
 
-        <docker-img-name>arm32v7/eclipse-temurin:11.0.23_9-jre-jammy</docker-img-name>
+        <docker-img-name>arm32v7/eclipse-temurin:17.0.13_11-jre-jammy</docker-img-name>
 
     </properties>
 
@@ -61,12 +61,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.11.0</version>
-            <scope>compile</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>commons-io</groupId>-->
+<!--            <artifactId>commons-io</artifactId>-->
+<!--            <version>2.11.0</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
