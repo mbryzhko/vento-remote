@@ -25,8 +25,6 @@
         <snake-yaml.version>2.2</snake-yaml.version>
         <slf4j-api.version>2.0.16</slf4j-api.version>
 
-        <docker-img-name>arm32v7/eclipse-temurin:17.0.13_11-jre-jammy</docker-img-name>
-
     </properties>
 
     <dependencies>
@@ -192,49 +190,87 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.13</version>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.45.1</version>
                 <configuration>
-                    <repository>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}-arm32v7</repository>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <username>${env.GITHUB_ACTOR}</username>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <password>${env.GITHUB_TOKEN}</password>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
-                        <IMG>lpicanco/java11-alpine</IMG>
-                    </buildArgs>
+                    <images>
+                        <image>
+                            <name>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}-arm32v7</name>
+                            <build>
+                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                                <buildx>
+                                    <platforms>
+                                        <platform>linux/arm/v7</platform>
+                                        <platform>linux/amd64</platform>
+                                    </platforms>
+                                </buildx>
+                                <args>
+                                    <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>
+                                </args>
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                            </build>
+                        </image>
+                    </images>
+                    <authConfig>
+                        <username>${env.GITHUB_ACTOR}</username>
+                        <password>${env.GITHUB_TOKEN}</password>
+                    </authConfig>
                 </configuration>
                 <executions>
                     <execution>
-                        <id>arm32v7</id>
+                        <id>docker-build</id>
                         <goals>
                             <goal>build</goal>
-                            <goal>push</goal>
                         </goals>
-                        <configuration>
-                            <tag>${project.version}</tag>
-                            <buildArgs>
-                                <IMG>${docker-img-name}</IMG>
-                            </buildArgs>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>arm32v7-tag-latest</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                        <configuration>
-                            <tag>latest</tag>
-                            <buildArgs>
-                                <IMG>${docker-img-name}</IMG>
-                            </buildArgs>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--                <version>1.4.13</version>-->
+<!--                <configuration>-->
+<!--                    <repository>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}-arm32v7</repository>-->
+<!--                    &lt;!&ndash;suppress UnresolvedMavenProperty &ndash;&gt;-->
+<!--                    <username>${env.GITHUB_ACTOR}</username>-->
+<!--                    &lt;!&ndash;suppress UnresolvedMavenProperty &ndash;&gt;-->
+<!--                    <password>${env.GITHUB_TOKEN}</password>-->
+<!--                    <buildArgs>-->
+<!--                        <JAR_FILE>${project.build.finalName}-jar-with-dependencies.jar</JAR_FILE>-->
+<!--                    </buildArgs>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>arm32v7</id>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <tag>${project.version}</tag>-->
+<!--                            <buildArgs>-->
+<!--                                <IMG>${docker-img-name}</IMG>-->
+<!--                            </buildArgs>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                    <execution>-->
+<!--                        <id>arm32v7-tag-latest</id>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <tag>latest</tag>-->
+<!--                            <buildArgs>-->
+<!--                                <IMG>${docker-img-name}</IMG>-->
+<!--                            </buildArgs>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
