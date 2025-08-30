@@ -196,7 +196,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>docker.pkg.github.com/mbryzhko/vento-remote/${project.artifactId}-arm32v7</name>
+                            <name>ghcr.io/mbryzhko/vento-remote/${project.artifactId}-arm32v7</name>
                             <build>
                                 <dockerFileDir>${project.basedir}</dockerFileDir>
                                 <buildx>
