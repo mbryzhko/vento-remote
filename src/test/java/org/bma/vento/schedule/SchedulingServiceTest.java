@@ -104,7 +104,7 @@ class SchedulingServiceTest {
         service.configureTasks(taskRegistrar);
 
         Mockito.verify(testCommand, Mockito.times(0)).run();
-        Mockito.verifyZeroInteractions(store);
+        Mockito.verifyNoInteractions(store);
     }
 
     private ScheduleScenario simpleScenario() {

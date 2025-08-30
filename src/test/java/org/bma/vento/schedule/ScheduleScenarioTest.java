@@ -61,7 +61,7 @@ class ScheduleScenarioTest {
 
         scenario.run();
 
-        Mockito.verifyZeroInteractions(cmd2);
+        Mockito.verifyNoInteractions(cmd2);
     }
 
     @Test

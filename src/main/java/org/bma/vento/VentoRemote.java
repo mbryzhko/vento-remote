@@ -1,7 +1,6 @@
 package org.bma.vento;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.bma.vento.client.DefaultVentoClient;
 import org.bma.vento.client.RetryableVentoClient;
 import org.bma.vento.client.VentoClient;
@@ -42,17 +41,14 @@ public class VentoRemote {
     public ScheduleProperties scheduleProperties(ResourceLoader resourceLoader) {
         log.debug("Loading scheduling properties from: {}", schedulePropertiedFileName);
 
-        InputStream propsInputStream = null;
-        try {
-            propsInputStream = resourceLoader.getResource(schedulePropertiedFileName).getInputStream();
+
+        try (InputStream propsInputStream = resourceLoader.getResource(schedulePropertiedFileName).getInputStream()) {
             ScheduleProperties properties = ScheduleProperties.createFrom(propsInputStream);
 
             log.info("Loaded properties: {}", properties);
             return properties;
         } catch (IOException e) {
             throw new IllegalStateException("Error loading properties from: " + schedulePropertiedFileName, e);
-        } finally {
-            IOUtils.closeQuietly(propsInputStream);
         }
     }
 
