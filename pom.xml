@@ -224,6 +224,7 @@
                         <id>docker-build</id>
                         <goals>
                             <goal>build</goal>
+                            <goal>push</goal>
                         </goals>
                     </execution>
                 </executions>
