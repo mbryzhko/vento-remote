@@ -11,12 +11,12 @@ Supported architecture is [ARM32v6](https://github.com/mbryzhko/vento-remote/tre
 **Select host architecture.** There are following types supported:
 - x86_64
 - arm32v7
-- [arm32v6](https://github.com/mbryzhko/vento-remote/tree/arm32v6)
+- [arm32v6](https://github.com/mbryzhko/vento-remote/tree/arm32v6) Deprecated!
 
-Checkout the latest version of [vento-remote-x86](https://github.com/mbryzhko/vento-remote/pkgs/container/vento-remote%2Fvento-remote-x86) release and set env var: `VENTO_VERSION`.  
+Checkout the latest version of [vento-remote-arm32v7](https://github.com/mbryzhko/vento-remote/pkgs/container/vento-remote%2Fvento-remote-arm32v7) release and set env var: `VENTO_VERSION`.  
 ```
 export VENTO_VERSION=latest # or specific version
-export VENTO_IMAGE=ghcr.io/mbryzhko/vento-remote/vento-remote-x86
+export VENTO_IMAGE=ghcr.io/mbryzhko/vento-remote/vento-remote-arm32v7
 ```
 
 **Create config file.** For example:
@@ -44,6 +44,8 @@ scenario:
 **Specify config file location.**  
 `export VENTO_CONFIG_PATH=/home/pi/vento/config.yaml`
 
-**Run.**  
-`./run.sh`
+**Run.** 
+* Upload files into folder `vento`: [run.sh](run.sh) and [custom-seccomp.json](custom-seccomp.json)
+* Run 
+`./vento/run.sh`
 

@@ -1,0 +1,7 @@
+{
+  "names": [
+    "clone3"
+  ],
+  "action": "SCMP_ACT_ALLOW",
+  "args": []
+}
