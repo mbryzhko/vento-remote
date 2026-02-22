@@ -6,10 +6,15 @@ import lombok.ToString;
 @ToString
 public class ShortStatusResponse extends AbstractClientResponse {
 
+    // Skipped first 6 bytes
     private static final int ON_OFF_STATUS_IDX = 1;
+    private static final int SELECTED_SPEED_IDX = 3;
 
     @Getter
     private boolean turnedOn;
+
+    @Getter
+    private int selectedSpeed;
 
     public ShortStatusResponse(byte[] response) {
         super(response);
@@ -18,6 +23,7 @@ public class ShortStatusResponse extends AbstractClientResponse {
     @Override
     protected void parseCommand(byte[] response) {
         turnedOn = response[ON_OFF_STATUS_IDX] == 1;
+        selectedSpeed = response[SELECTED_SPEED_IDX];
     }
 
     // Example of response:
