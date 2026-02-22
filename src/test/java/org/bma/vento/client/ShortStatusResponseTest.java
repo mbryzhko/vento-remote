@@ -23,4 +23,11 @@ class ShortStatusResponseTest {
         assertTrue(statusResponse.isTurnedOn());
     }
 
+    @Test
+    public void selectedSpeedResponseParsedCorrectly() {
+        ShortStatusResponse statusResponse = new ShortStatusResponse(ON_RESPONSE);
+
+        assertEquals(1, statusResponse.getSelectedSpeed());
+    }
+
 }
