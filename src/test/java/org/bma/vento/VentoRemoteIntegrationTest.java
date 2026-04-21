@@ -34,7 +34,7 @@ class VentoRemoteIntegrationTest {
         ScheduledTask task = scheduledTasks.iterator().next();
 
         Assertions.assertNotNull(task.getTask().getRunnable());
-        Assertions.assertTrue(task.getTask() instanceof CronTask);
-        Assertions.assertEquals(CRON_EVERY_2_MINUTES, ((CronTask)task.getTask()).getExpression());
+        Assertions.assertInstanceOf(CronTask.class, task.getTask());
+        Assertions.assertEquals(CRON_EVERY_2_MINUTES, ((CronTask) task.getTask()).getExpression());
     }
 }

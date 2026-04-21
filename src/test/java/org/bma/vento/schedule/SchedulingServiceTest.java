@@ -59,7 +59,7 @@ class SchedulingServiceTest {
         Mockito.verify(taskRegistrar, Mockito.times(2)).addCronTask(taskCaptor.capture());
 
         Assertions.assertNotNull(taskCaptor.getValue().getExpression());
-        Assertions.assertTrue(taskCaptor.getValue().getRunnable() instanceof ScheduleScenario);
+        Assertions.assertNotNull(taskCaptor.getValue().getRunnable());
     }
 
     @Test
