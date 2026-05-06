@@ -29,7 +29,7 @@ mvn docker:build
 mvn docker:build docker:push
 
 # Manual Docker build for arm32v7
-docker build --build-arg JAR_FILE=vento-remote-2.4-SNAPSHOT-jar-with-dependencies.jar \
+docker build --build-arg JAR_FILE=vento-remote-2.7-SNAPSHOT-jar-with-dependencies.jar \
   --platform linux/arm/v7 -t user/repo:arm32v7-latest --load .
 ```
 
