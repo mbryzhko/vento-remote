@@ -78,8 +78,9 @@ public class VentoRemote {
     }
 
     @Bean
-    public SchedulingService schedulingService(ScheduleScenarioFactory factory, ScheduleProperties scheduleProperties) {
-        return new SchedulingService(factory, scheduleProperties);
+    public SchedulingService schedulingService(ScheduleScenarioFactory factory, ScheduleProperties scheduleProperties,
+                                               ScenarioStateStore scenarioStateStore) {
+        return new SchedulingService(factory, scheduleProperties, scenarioStateStore);
     }
 
     @Bean

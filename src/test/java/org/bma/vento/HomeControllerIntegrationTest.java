@@ -86,4 +86,20 @@ class HomeControllerIntegrationTest {
                 .andReturn().getResponse().getContentAsString();
         assertTrue(body.contains("Durability"));
     }
+
+    @Test
+    void homePageContainsScenarioStateStoreSection() throws Exception {
+        String body = mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        assertTrue(body.contains("Scenario State Store"));
+    }
+
+    @Test
+    void homePageShowsDurabilityNotEnabledMessageInStateStoreSection() throws Exception {
+        String body = mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        assertTrue(body.contains("Durability is not enabled."));
+    }
 }

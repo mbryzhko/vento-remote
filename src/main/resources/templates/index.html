@@ -46,6 +46,27 @@
         <p class="empty" th:if="${#lists.isEmpty(properties.scenario)}">No scenarios configured.</p>
     </section>
 
+    <section>
+        <h2 class="section-title">Scenario State Store</h2>
+        <p class="empty" th:unless="${properties.durabilityEnabled}">Durability is not enabled.</p>
+        <div class="card" th:if="${properties.durabilityEnabled}">
+            <table class="state-table">
+                <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>Last Execution</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="state : ${scenarioStates}">
+                    <td th:text="${state.name}">—</td>
+                    <td th:text="${state.lastExecution != null ? state.lastExecution : '—'}">—</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
 </main>
 
 <footer>

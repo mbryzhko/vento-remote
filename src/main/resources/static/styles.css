@@ -145,3 +145,35 @@ main {
     font-style: italic;
     font-size: 0.9rem;
 }
+
+.state-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.state-table th {
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #636e72;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0 0 0.5rem 0;
+    border-bottom: 1px solid #dfe6e9;
+}
+
+.state-table td {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f5f6fa;
+    color: #2d3436;
+}
+
+.state-table td:last-child {
+    font-family: 'Courier New', Courier, monospace;
+    color: #636e72;
+}
+
+.state-table tr:last-child td {
+    border-bottom: none;
+}

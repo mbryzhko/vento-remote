@@ -3,6 +3,8 @@ package org.bma.vento.schedule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bma.vento.schedule.durable.DurableScheduleScenario;
+import org.bma.vento.schedule.durable.ScenarioState;
+import org.bma.vento.schedule.durable.ScenarioStateStore;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.CronTask;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
@@ -12,6 +14,7 @@ import org.springframework.scheduling.support.SimpleTriggerContext;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +23,8 @@ public class SchedulingService implements SchedulingConfigurer {
     private final ScheduleScenarioFactory scheduleScenarioFactory;
 
     private final ScheduleProperties properties;
+
+    private final ScenarioStateStore scenarioStateStore;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
@@ -33,6 +38,17 @@ public class SchedulingService implements SchedulingConfigurer {
             log.info("Scheduling scenario: {}, Next run at: {}", scenario, trigger.nextExecutionTime(new SimpleTriggerContext()));
             taskRegistrar.addCronTask(new CronTask(scenario, trigger));
         });
+    }
+
+    public List<ScenarioStateView> getScenarioState() {
+        return properties.getScenario().stream()
+                .map(s -> new ScenarioStateView(s.getName(), readLastExecution(s.getName())))
+                .collect(Collectors.toList());
+    }
+
+    private LocalDateTime readLastExecution(String scenarioName) {
+        ScenarioState state = scenarioStateStore.readState(scenarioName);
+        return state != null ? state.getLastExecution() : null;
     }
 
     /**

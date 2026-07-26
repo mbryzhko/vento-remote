@@ -2,6 +2,7 @@ package org.bma.vento.web;
 
 import lombok.RequiredArgsConstructor;
 import org.bma.vento.schedule.ScheduleProperties;
+import org.bma.vento.schedule.SchedulingService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,8 @@ public class HomeController {
 
     private final ScheduleProperties scheduleProperties;
 
+    private final SchedulingService schedulingService;
+
     @Value("${app.version}")
     private String appVersion;
 
@@ -20,6 +23,7 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("properties", scheduleProperties);
         model.addAttribute("appVersion", appVersion);
+        model.addAttribute("scenarioStates", schedulingService.getScenarioState());
         return "index";
     }
 }
