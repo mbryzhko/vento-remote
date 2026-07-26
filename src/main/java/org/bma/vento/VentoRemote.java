@@ -10,9 +10,10 @@ import org.bma.vento.schedule.SchedulingService;
 import org.bma.vento.schedule.durable.FileScenarioStateStore;
 import org.bma.vento.schedule.durable.NoOpScenarioStateStore;
 import org.bma.vento.schedule.durable.ScenarioStateStore;
+import org.apache.catalina.Context;
+import org.apache.catalina.startup.Tomcat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,6 +21,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,7 +85,20 @@ public class VentoRemote {
                 : new NoOpScenarioStateStore();
     }
 
-    public static void main(String[] args) {
-        new AnnotationConfigApplicationContext("org.bma.vento");
+    public static void main(String[] args) throws Exception {
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.scan("org.bma.vento");
+
+        Tomcat tomcat = new Tomcat();
+        tomcat.setPort(8080);
+        tomcat.getConnector();
+
+        Context ctx = tomcat.addContext("", null);
+        DispatcherServlet servlet = new DispatcherServlet(context);
+        Tomcat.addServlet(ctx, "dispatcher", servlet).setLoadOnStartup(1);
+        ctx.addServletMappingDecoded("/*", "dispatcher");
+
+        tomcat.start();
+        tomcat.getServer().await();
     }
 }
