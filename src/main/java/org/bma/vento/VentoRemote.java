@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -30,6 +31,7 @@ import java.io.InputStream;
 @Configuration
 @Slf4j
 @EnableScheduling
+@PropertySource("classpath:application.properties")
 public class VentoRemote {
     // VENTO_SCHEDULE
     private static final String SCHEDULE_PROP_FILE = "vento.schedule";
