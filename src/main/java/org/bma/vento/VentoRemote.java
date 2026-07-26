@@ -33,6 +33,8 @@ import java.io.InputStream;
 public class VentoRemote {
     // VENTO_SCHEDULE
     private static final String SCHEDULE_PROP_FILE = "vento.schedule";
+    private static final String SERVER_PORT_PROP = "SERVER_PORT";
+    private static final String DEFAULT_SERVER_PORT = "8080";
 
     @Value("${" + SCHEDULE_PROP_FILE + ":classpath:/schedule.yaml}")
     private String schedulePropertiedFileName;
@@ -89,8 +91,10 @@ public class VentoRemote {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.scan("org.bma.vento");
 
+        int port = Integer.parseInt(System.getenv().getOrDefault(SERVER_PORT_PROP, DEFAULT_SERVER_PORT));
+
         Tomcat tomcat = new Tomcat();
-        tomcat.setPort(8080);
+        tomcat.setPort(port);
         tomcat.getConnector();
 
         Context ctx = tomcat.addContext("", null);
