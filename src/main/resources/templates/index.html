@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vento Remote</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+
+<header>
+    <h1>Vento Remote</h1>
+</header>
+
+<main>
+
+    <section>
+        <h2 class="section-title">Durability</h2>
+        <div class="card">
+            <div class="durability-grid">
+                <span class="label">Status</span>
+                <span>
+                    <span th:if="${properties.durabilityEnabled}" class="badge badge-on">Enabled</span>
+                    <span th:unless="${properties.durabilityEnabled}" class="badge badge-off">Disabled</span>
+                </span>
+                <span class="label">Store path</span>
+                <span class="value" th:text="${properties.durability.storeFolderPath}">—</span>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Scenarios</h2>
+        <div class="scenarios-grid" th:if="${not #lists.isEmpty(properties.scenario)}">
+            <div class="scenario-card" th:each="scenario : ${properties.scenario}">
+                <span class="scenario-name" th:text="${scenario.name}">Scenario</span>
+                <span class="scenario-cron" th:text="${scenario.cron}">cron</span>
+                <ul class="commands-list">
+                    <li class="command-item" th:each="cmd : ${scenario.commands}">
+                        <span class="command-type" th:text="${cmd.type}">TYPE</span>
+                        <span class="command-host" th:text="${cmd.host + ':' + cmd.port}">host:port</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <p class="empty" th:if="${#lists.isEmpty(properties.scenario)}">No scenarios configured.</p>
+    </section>
+
+</main>
+
+</body>
+</html>

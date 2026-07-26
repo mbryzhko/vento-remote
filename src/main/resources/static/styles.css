@@ -1,0 +1,147 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f6fa;
+    color: #2d3436;
+    min-height: 100vh;
+}
+
+header {
+    background: #2d3436;
+    color: #fff;
+    padding: 1.25rem 2rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+main {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #636e72;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.75rem;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.durability-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+}
+
+.label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #636e72;
+}
+
+.value {
+    font-size: 0.95rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-on {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-off {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.scenario-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    display: grid;
+    gap: 0.6rem;
+}
+
+.scenario-name {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.scenario-cron {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.85rem;
+    background: #f5f6fa;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: #636e72;
+}
+
+.commands-list {
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+}
+
+.command-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.88rem;
+}
+
+.command-type {
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: #dfe6e9;
+    color: #2d3436;
+}
+
+.command-host {
+    color: #636e72;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.empty {
+    color: #b2bec3;
+    font-style: italic;
+    font-size: 0.9rem;
+}
