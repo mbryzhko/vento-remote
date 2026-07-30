@@ -18,6 +18,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class SchedulingServiceTest {
@@ -46,7 +47,7 @@ class SchedulingServiceTest {
 
     @BeforeEach
     public void setup() {
-        service = new SchedulingService(scheduleScenarioFactory, scheduleProperties);
+        service = new SchedulingService(scheduleScenarioFactory, scheduleProperties, store);
     }
 
     @Test
@@ -105,6 +106,60 @@ class SchedulingServiceTest {
 
         Mockito.verify(testCommand, Mockito.times(0)).run();
         Mockito.verifyNoInteractions(store);
+    }
+
+    @Test
+    public void getScenarioState_returnsStateForConfiguredScenarios() {
+        givenScenarioInProperties(SCENARIO_NAME);
+        LocalDateTime lastExecution = LocalDateTime.now().minusHours(1);
+        Mockito.when(store.readState(SCENARIO_NAME)).thenReturn(new ScenarioState(lastExecution));
+
+        List<ScenarioStateView> result = service.getScenarioState();
+
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(SCENARIO_NAME, result.get(0).getName());
+        Assertions.assertEquals(lastExecution, result.get(0).getLastExecution());
+    }
+
+    @Test
+    public void getScenarioState_returnsNullLastExecutionWhenNoStateStored() {
+        givenScenarioInProperties(SCENARIO_NAME);
+        Mockito.when(store.readState(SCENARIO_NAME)).thenReturn(null);
+
+        List<ScenarioStateView> result = service.getScenarioState();
+
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(SCENARIO_NAME, result.get(0).getName());
+        Assertions.assertNull(result.get(0).getLastExecution());
+    }
+
+    @Test
+    public void getScenarioState_returnsEntryForEachConfiguredScenario() {
+        givenScenarioInProperties(SCENARIO_NAME, "Scenario 1");
+        Mockito.when(store.readState(Mockito.anyString())).thenReturn(null);
+
+        List<ScenarioStateView> result = service.getScenarioState();
+
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertEquals(SCENARIO_NAME, result.get(0).getName());
+        Assertions.assertEquals("Scenario 1", result.get(1).getName());
+    }
+
+    @Test
+    public void getScenarioState_returnsEmptyListWhenNoScenariosConfigured() {
+        List<ScenarioStateView> result = service.getScenarioState();
+
+        Assertions.assertTrue(result.isEmpty());
+    }
+
+    private void givenScenarioInProperties(String... names) {
+        for (String name : names) {
+            Scenario scenario = new Scenario();
+            scenario.setName(name);
+            scenario.setCron(createSchedulingExpression());
+            scenario.setCommands(Collections.emptyList());
+            scheduleProperties.getScenario().add(scenario);
+        }
     }
 
     private ScheduleScenario simpleScenario() {
